@@ -2,10 +2,11 @@
   "name": "log-collection",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint ."
+    "test": "mocha './test/**/*.spec.js'",
+    "lint": "eslint src",
+    "start": "nodemon app.js"
   },
   "repository": {
     "type": "git",
@@ -18,9 +19,13 @@
   },
   "homepage": "https://github.com/fbonecco/log-collection#readme",
   "devDependencies": {
+    "chai": "^4.2.0",
     "eslint": "^7.5.0",
     "eslint-config-airbnb-base": "^14.2.0",
-    "eslint-plugin-import": "^2.22.0"
+    "eslint-plugin-import": "^2.22.0",
+    "mocha": "^8.1.0",
+    "mock-fs": "^4.12.0",
+    "sinon": "^9.0.2"
   },
   "dependencies": {
     "nodemon": "^2.0.4"
