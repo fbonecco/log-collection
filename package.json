@@ -1,0 +1,28 @@
+{
+  "name": "log-collection",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fbonecco/log-collection.git"
+  },
+  "author": "fbonecco@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fbonecco/log-collection/issues"
+  },
+  "homepage": "https://github.com/fbonecco/log-collection#readme",
+  "devDependencies": {
+    "eslint": "^7.5.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.0"
+  },
+  "dependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
