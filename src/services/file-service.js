@@ -5,7 +5,8 @@ const { BasicTextFilter } = require('../io/basic-text-filter');
 const BASE_PATH = '/var/log/';
 
 // TODO: add validations to prevent getting access to files in locations
-// other than /var/log
+// other than /var/log. For instance, an attacker would get access to the
+// /etc/password if it sends this value ..%2F..%2Fetc%2Fpasswd in the GET request
 async function checkFile(fileName = null) {
   if (typeof fileName !== 'string' || !fileName) {
     throw new Error('Invalid file.');

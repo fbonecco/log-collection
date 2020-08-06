@@ -18,10 +18,6 @@ class LogStream extends Readable {
     this.source.on('end', () => {
       this.push(null);
     });
-
-    this.source.on('end', () => {
-      this.push(null);
-    });
   }
 
   // eslint-disable-next-line no-underscore-dangle

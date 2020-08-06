@@ -26,6 +26,10 @@ function filesRoutes() {
         if (!fileExists) {
           return res.sendStatus(404);
         }
+        // ideally, the stream created with the streamToString function
+        // should be piped to the res object.
+        // that way, we'd avoid keeping all the events in memory until
+        // the response is commited (this is how the command line tool works)
         const events = await streamToString(getFileStream(fileName, numberOfLines, filter));
         body.lines = events;
         return res.json(body);

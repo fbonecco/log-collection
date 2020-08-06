@@ -31,11 +31,9 @@ class LogTailer extends EventEmitter {
         this.emit('error', err);
         return null;
       });
-      if (!fileHandle) {
-        return;
-      }
 
       const remainingBytes = this.size - this.bRead;
+      // create the buffer of the size of the remainingBytes only
       const bfSize = (remainingBytes >= this.bufferSize) ? this.bufferSize : remainingBytes;
       if (this.offset === -1) {
         this.offset = this.size - bfSize;
@@ -65,7 +63,8 @@ class LogTailer extends EventEmitter {
       }
 
       this.emit('data', Buffer.from(strBuffer.join(''), this.encoding));
-
+      // chances are that the first line we read is not complete
+      // so we'll push it as part of the next read.
       [this.lastHead] = lines;
       const nextOffset = this.offset - bfSize;
       this.offset = (nextOffset < 0) ? 0 : nextOffset;
@@ -124,20 +123,14 @@ class LogTailer extends EventEmitter {
   }
 
   async openFile() {
-    try {
-      const fileHandle = await fsp.open(this.path, 'r');
-      const stats = await fileHandle.stat();
-      if (!stats.isFile()) {
-        throw Error();
-      }
-      const { size } = stats;
-      if (!this.size) {
-        this.size = size;
-      }
-      return fileHandle;
-    } catch (err) {
-      throw Error(`Can't open file ${this.path}`);
+    const fileHandle = await fsp.open(this.path, 'r');
+    const stats = await fileHandle.stat();
+
+    const { size } = stats;
+    if (!this.size) {
+      this.size = size;
     }
+    return fileHandle;
   }
 }
 
