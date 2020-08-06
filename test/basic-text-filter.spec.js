@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const chai = require('chai');
 const sinon = require('sinon');
-const { BasicTextFilter } = require('../src/basic-text-filter');
+const { BasicTextFilter } = require('../src/io/basic-text-filter');
 const { ObjectReadableMock, ObjectWritableMock } = require('stream-mock');
 
 chai.should();

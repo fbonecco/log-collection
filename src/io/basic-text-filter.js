@@ -17,13 +17,12 @@ class BasicTextFilter extends Transform {
     }
   }
 
+  // eslint-disable-next-line no-underscore-dangle
   _transform(chunk, encoding, callback) {
-    const split = chunk.toString().split('\n');
-    split.map(line => {
-      if (line && line.includes(this.term)) {
-        this.push(`${line}\n`);
-      }
-    })
+    const line = chunk.toString();
+    if (line && line.includes(this.term)) {
+      this.push(`${line}`);
+    }
     callback();
   }
 }

@@ -12,7 +12,12 @@
     "restartable": "rs",
     "ignore": [
       "node_modules/**/node_modules"
-    ]
+    ],
+    "delay": "2500",
+    "env": {
+      "NODE_ENV": "development",
+      "PORT": 4000
+    }
   },
   "repository": {
     "type": "git",
@@ -35,6 +40,8 @@
     "stream-mock": "^2.0.5"
   },
   "dependencies": {
+    "express": "^4.17.1",
+    "minimist": "^1.2.5",
     "nodemon": "^2.0.4"
   }
 }
