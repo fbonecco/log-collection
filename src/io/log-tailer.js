@@ -27,7 +27,13 @@ class LogTailer extends EventEmitter {
     let fileHandle = null;
 
     try {
-      fileHandle = await this.openFile();
+      fileHandle = await this.openFile().catch((err) => {
+        this.emit('error', err);
+        return null;
+      });
+      if (!fileHandle) {
+        return;
+      }
 
       const remainingBytes = this.size - this.bRead;
       const bfSize = (remainingBytes >= this.bufferSize) ? this.bufferSize : remainingBytes;
@@ -71,10 +77,11 @@ class LogTailer extends EventEmitter {
     } catch (err) {
       this.emit('error', err);
     } finally {
-      await this.closeFile();
+      await this.closeFile(fileHandle).catch();
     }
   }
 
+  // eslint-disable-next-line class-methods-use-this
   validateAndCleanPath(path = '') {
     if (typeof path !== 'string') {
       throw new Error('The "path" argument must be of type string.');
@@ -87,6 +94,7 @@ class LogTailer extends EventEmitter {
     return cleanPath;
   }
 
+  // eslint-disable-next-line class-methods-use-this
   validateNumberOfLines() {
     if (typeof this.numberOfLines !== 'number') {
       throw new Error('The "numberOfLines" argument must be of type number.');
@@ -97,6 +105,7 @@ class LogTailer extends EventEmitter {
     }
   }
 
+  // eslint-disable-next-line class-methods-use-this
   validateBufferSize() {
     if (typeof this.bufferSize !== 'number') {
       throw new Error('The "bufferSize" argument must be of type number.');
@@ -107,6 +116,7 @@ class LogTailer extends EventEmitter {
     }
   }
 
+  // eslint-disable-next-line class-methods-use-this
   async closeFile(fileHandle = null) {
     if (fileHandle) {
       await fileHandle.close();
@@ -114,13 +124,20 @@ class LogTailer extends EventEmitter {
   }
 
   async openFile() {
-    const fileHandle = await fsp.open(this.path, 'r');
-    const stats = await fileHandle.stat();
-    const { size } = stats;
-    if (!this.size) {
-      this.size = size;
+    try {
+      const fileHandle = await fsp.open(this.path, 'r');
+      const stats = await fileHandle.stat();
+      if (!stats.isFile()) {
+        throw Error();
+      }
+      const { size } = stats;
+      if (!this.size) {
+        this.size = size;
+      }
+      return fileHandle;
+    } catch (err) {
+      throw Error(`Can't open file ${this.path}`);
     }
-    return fileHandle;
   }
 }
 

@@ -3,7 +3,7 @@ const { expect } = require('chai');
 const chai = require('chai');
 const sinon = require('sinon');
 const fsp = require('fs').promises;
-const { LogTailer } = require('../src/log-tailer');
+const { LogTailer } = require('../src/io/log-tailer');
 
 chai.should();
 
